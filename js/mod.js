@@ -1,33 +1,39 @@
 let modInfo = {
-	name: "The loop Tree",
+	name: "The Power Tree",
 	id: "MEGASHIT",
 	author: "Thaness0",
 	pointsName: "points",
-	modFiles: ["powerLayer.js", "tree.js", "sideLayers.js", "progressLayer.js","speedLayer.js"],
+	modFiles: ["powerLayer.js", "tree.js", "sideLayers.js", "progressLayer.js","speedLayer.js","autoLayer.js"],//add mpower and loop later
 
-	discordName: "",
-	discordLink: "",
+	discordName: "totally real discord",
+	discordLink: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
 	initialStartPoints: new Decimal (10), // Used for hard resets and new players
 	offlineLimit: 1,  // In hours
 }
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.1",
-	name: "starting out",
+	num: "v0.1",
+	name: "Another Generic TMT Mod",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
 	<h3>v0.1</h3><br>
-		- added 3 prestige layers<br>
-		- Added achievements and savebank<br>
+		-added 2 more prestige layers and finished the other 2<br>
+		-added more achievements<br>
+		-added an actual end point (40 progress)<br>
+		- other stuff <br>
+		-3 :3's (including this one)
+	<h3>v0.0.1 test update</h3><br>
+		- added 2 prestige layers<br>
+		- Added achievements<br>
 		- 2 new themes.`
 
 let winText = `good job beating the game! you probably were not suppose to do this yet`
 
 // If you add new functions anywhere inside of a layer, and those functions have an effect when called, add them here.
 // (The ones here are examples, all official functions are already taken care of)
-var doNotCallTheseFunctionsEveryTick = ["blowUpEverything", "importSave"]
+var doNotCallTheseFunctionsEveryTick = ["blowUpEverything"]
 
 function getStartPoints(){
     return new Decimal(modInfo.initialStartPoints)
@@ -52,7 +58,7 @@ function getPointGen() {
 	if (hasUpgrade('p',14)) gain = gain.times(1.5)
 	if (hasUpgrade('p',15)) gain = gain.times(upgradeEffect('p',15))
 	if (hasMilestone('p',3)) gain = gain.mul(3)
-	if (hasMilestone('p',5)) gain = gain.mul((new Decimal(player.p.milestones.length).pow(0.4).mul(0.9).add(1)))
+	if (hasMilestone('p',4)) gain = gain.mul((new Decimal(player.p.milestones.length).pow(0.4).mul(0.9).add(1)))
 	if (hasUpgrade('p',25)) gain = gain.times(1.5)
 	if (hasMilestone('r',1)) gain = gain.mul(3)
 	if (hasMilestone('r',3)) gain = gain.mul(2)
@@ -67,9 +73,9 @@ function addedPlayerData() { return {
 
 // Display extra things at the top of the page
 var displayThings = [function() 
-	{return "current endgame: IDK yet" + 
-		    "<br> for some reason the layers randomly appear and disappear when you reload the page,"+
-			"<br>i wish i knew why. just reload until you see them (this can take a while, sorry)"
+	{return "current endgame: 40 progress" + 
+		    "<br>  if layers aren't visible, try reloading the page"+
+			"<br>"
 }]
 
 // Determines when the game "ends"

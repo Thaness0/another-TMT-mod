@@ -7,6 +7,7 @@ addLayer("p", {
     symbol:"<h1 style='color:#22493C'>֎</h1>",
     color:"#26A69A",
         nodeStyle: {"background": "radial-gradient(circle, #80CBC4 15%, #00695C 90%)", 'border-radius': '45%'},
+    milestonePopups() {return false},
     row: "0",
     layerShown() {return true},
     hotkeys: [
@@ -45,9 +46,26 @@ addLayer("p", {
         if (hasUpgrade('p',36)) passgenp = passgenp + 0.3
         if (hasMilestone('r',6)) passgenp = passgenp + 0.2
         passgenp = passgenp + (getBuyableAmount('s',11)*0.1)
+        if(hasUpgrade('a',11)) passgenp = passgenp + (getBuyableAmount('s',11)*0.15)
             return passgenp
     }, 
-    autoUpgrade() {return hasMilestone('r', 6)},
+    autoUpgrade() {return (player.a.autoPowUp)}, //add later
+
+    clickables: {
+        11:{ //totally not stolen from XxXOLEGXxX's my very good tree
+                title:"power",
+                display: "hold to Reset (totally not stolen from Y🆎oi)",
+                canClick() {
+                    return tmp[this.layer].canReset
+                },
+                onHold() {
+                    doReset(this.layer)
+                },
+                style() {return {"border-radius":"0px 33% 33% opx","border":"4px solid","border-color":"rgba(0, 0, 0, .125)"}}
+
+        }
+
+    },
 
     upgrades: {
         11:{
@@ -74,7 +92,7 @@ addLayer("p", {
         },
         15:{
             title:"upgrade upgrade 2",
-            description:"get a small multiplier based on your amount of power upgrades",
+            description:"get a small multiplier to points based on your amount of power upgrades",
             cost: new Decimal(25),
             effect() {return (new Decimal(player.p.upgrades.length).pow(0.6).mul(0.7).add(1))},
             effectDisplay() { return "x"+format(upgradeEffect(this.layer, this.id)) },
@@ -98,7 +116,7 @@ addLayer("p", {
         },
         23:{
             title:"milestone upgrade",
-            description:"add to your base point gain based on milestones",
+            description:"add to your base point gain based on power milestones",
             cost: new Decimal(4000),
             effect() {return (new Decimal(player.p.milestones.length).pow(0.7).mul(0.9).add(1))},
             effectDisplay() { return "+"+format(upgradeEffect(this.layer, this.id)) },
@@ -203,7 +221,7 @@ addLayer("p", {
 
     tabFormat: [
         "main-display",
-        "prestige-button",
+        ["row", ["prestige-button", ["clickable", 11]]],
         ["display-text", function() {return "you have " + format(player.points) + " points<br>your best points is " + format(player.p.best)}],
         "blank",
         ["column",[
